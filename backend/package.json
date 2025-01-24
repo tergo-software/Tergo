@@ -1,0 +1,17 @@
+{
+  "name": "tergo-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "pg": "^8.13.1",
+    "serverless": "^4.5.0"
+  }
+}

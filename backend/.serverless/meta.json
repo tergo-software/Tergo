@@ -1,0 +1,881 @@
+{
+  "/Users/is543/Desktop/Tergo/backend/serverless.yml": {
+    "versionFramework": "4.5.0",
+    "servicePath": "/Users/is543/Desktop/Tergo/backend/serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "serverless-app",
+      "frameworkVersion": "4",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs18.x",
+        "stackName": "tergo",
+        "region": "us-west-1",
+        "httpApi": {
+          "id": "zvlh814lbk"
+        },
+        "environment": {
+          "DB_HOST": "tergo-rds-free.c9yuukcc8dbt.us-west-1.rds.amazonaws.com",
+          "DB_PORT": "5432",
+          "DB_USER": "tergoadmin",
+          "DB_PASSWORD": "<REDACTED>",
+          "DB_NAME": "postgres"
+        },
+        "vpc": {
+          "securityGroupIds": [
+            "sg-0178391edd988e7be"
+          ],
+          "subnetIds": [
+            "subnet-0100ca8036d20b118"
+          ]
+        },
+        "iam": {
+          "role": {
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "ssm:GetParameter",
+                  "ssm:GetParameters"
+                ],
+                "Resource": "arn:aws:ssm:*"
+              }
+            ]
+          }
+        },
+        "stage": "dev",
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "TestLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/serverless-app-dev-test"
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "serverless-app",
+                          "dev",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-app-dev*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-app-dev*:*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "ssm:GetParameter",
+                            "ssm:GetParameters"
+                          ],
+                          "Resource": "arn:aws:ssm:*"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "serverless-app",
+                      "dev",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                },
+                "ManagedPolicyArns": [
+                  {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+                      ]
+                    ]
+                  }
+                ]
+              }
+            },
+            "TestLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-west-1-20820625-fbac",
+                  "S3Key": "serverless/serverless-app/dev/1737685210114-2025-01-24T02:20:10.114Z/serverless-app.zip"
+                },
+                "Handler": "functions/test/handler.testHandler",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "serverless-app-dev-test",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "Environment": {
+                  "Variables": {
+                    "DB_HOST": "tergo-rds-free.c9yuukcc8dbt.us-west-1.rds.amazonaws.com",
+                    "DB_PORT": "5432",
+                    "DB_USER": "tergoadmin",
+                    "DB_PASSWORD": "<REDACTED>",
+                    "DB_NAME": "postgres"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                },
+                "VpcConfig": {
+                  "SecurityGroupIds": [
+                    "sg-0178391edd988e7be"
+                  ],
+                  "SubnetIds": [
+                    "subnet-0100ca8036d20b118"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "TestLogGroup"
+              ]
+            },
+            "TestLambdaVersionOe82CqRp0MIcDyKoinSZ4Gw5XvdKASicxVsb9pORdE": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "TestLambdaFunction"
+                },
+                "CodeSha256": "McgYys4v1tINHZYwyDfDqD6EWKYeYwBainlRvWItTk8="
+              }
+            },
+            "TestLambdaPermissionHttpApi": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "TestLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      "zvlh814lbk",
+                      "/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "HttpApiIntegrationTest": {
+              "Type": "AWS::ApiGatewayV2::Integration",
+              "Properties": {
+                "ApiId": "zvlh814lbk",
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": {
+                  "Fn::GetAtt": [
+                    "TestLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "PayloadFormatVersion": "2.0",
+                "TimeoutInMillis": 30000
+              }
+            },
+            "HttpApiRouteGetTest": {
+              "Type": "AWS::ApiGatewayV2::Route",
+              "Properties": {
+                "ApiId": "zvlh814lbk",
+                "RouteKey": "GET /test",
+                "Target": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      "integrations",
+                      {
+                        "Ref": "HttpApiIntegrationTest"
+                      }
+                    ]
+                  ]
+                }
+              },
+              "DependsOn": "HttpApiIntegrationTest"
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverless-framework-deployments-us-west-1-20820625-fbac",
+              "Export": {
+                "Name": "sls-serverless-app-dev-ServerlessDeploymentBucketName"
+              }
+            },
+            "TestLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "TestLambdaVersionOe82CqRp0MIcDyKoinSZ4Gw5XvdKASicxVsb9pORdE"
+              },
+              "Export": {
+                "Name": "sls-serverless-app-dev-TestLambdaFunctionQualifiedArn"
+              }
+            }
+          }
+        }
+      },
+      "functions": {
+        "test": {
+          "handler": "functions/test/handler.testHandler",
+          "events": [
+            {
+              "httpApi": {
+                "path": "/test",
+                "method": "get"
+              },
+              "resolvedMethod": "GET",
+              "resolvedPath": "/test"
+            }
+          ],
+          "name": "serverless-app-dev-test",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "TestLambdaVersionOe82CqRp0MIcDyKoinSZ4Gw5XvdKASicxVsb9pORdE"
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs18.x",
+      "stackName": "tergo",
+      "region": "us-west-1",
+      "httpApi": {
+        "id": "zvlh814lbk"
+      },
+      "environment": {
+        "DB_HOST": "tergo-rds-free.c9yuukcc8dbt.us-west-1.rds.amazonaws.com",
+        "DB_PORT": "5432",
+        "DB_USER": "tergoadmin",
+        "DB_PASSWORD": "<REDACTED>",
+        "DB_NAME": "postgres"
+      },
+      "vpc": {
+        "securityGroupIds": [
+          "sg-0178391edd988e7be"
+        ],
+        "subnetIds": [
+          "subnet-0100ca8036d20b118"
+        ]
+      },
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameter",
+                "ssm:GetParameters"
+              ],
+              "Resource": "arn:aws:ssm:*"
+            }
+          ]
+        }
+      },
+      "stage": "dev",
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "TestLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/serverless-app-dev-test"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "serverless-app",
+                        "dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup",
+                          "logs:TagResource"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-app-dev*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-app-dev*:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "ssm:GetParameter",
+                          "ssm:GetParameters"
+                        ],
+                        "Resource": "arn:aws:ssm:*"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "serverless-app",
+                    "dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              },
+              "ManagedPolicyArns": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+                    ]
+                  ]
+                }
+              ]
+            }
+          },
+          "TestLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-west-1-20820625-fbac",
+                "S3Key": "serverless/serverless-app/dev/1737685210114-2025-01-24T02:20:10.114Z/serverless-app.zip"
+              },
+              "Handler": "functions/test/handler.testHandler",
+              "Runtime": "nodejs18.x",
+              "FunctionName": "serverless-app-dev-test",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "DB_HOST": "tergo-rds-free.c9yuukcc8dbt.us-west-1.rds.amazonaws.com",
+                  "DB_PORT": "5432",
+                  "DB_USER": "tergoadmin",
+                  "DB_PASSWORD": "<REDACTED>",
+                  "DB_NAME": "postgres"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "VpcConfig": {
+                "SecurityGroupIds": [
+                  "sg-0178391edd988e7be"
+                ],
+                "SubnetIds": [
+                  "subnet-0100ca8036d20b118"
+                ]
+              }
+            },
+            "DependsOn": [
+              "TestLogGroup"
+            ]
+          },
+          "TestLambdaVersionOe82CqRp0MIcDyKoinSZ4Gw5XvdKASicxVsb9pORdE": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "TestLambdaFunction"
+              },
+              "CodeSha256": "McgYys4v1tINHZYwyDfDqD6EWKYeYwBainlRvWItTk8="
+            }
+          },
+          "TestLambdaPermissionHttpApi": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "TestLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    "zvlh814lbk",
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "HttpApiIntegrationTest": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+              "ApiId": "zvlh814lbk",
+              "IntegrationType": "AWS_PROXY",
+              "IntegrationUri": {
+                "Fn::GetAtt": [
+                  "TestLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "PayloadFormatVersion": "2.0",
+              "TimeoutInMillis": 30000
+            }
+          },
+          "HttpApiRouteGetTest": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+              "ApiId": "zvlh814lbk",
+              "RouteKey": "GET /test",
+              "Target": {
+                "Fn::Join": [
+                  "/",
+                  [
+                    "integrations",
+                    {
+                      "Ref": "HttpApiIntegrationTest"
+                    }
+                  ]
+                ]
+              }
+            },
+            "DependsOn": "HttpApiIntegrationTest"
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-framework-deployments-us-west-1-20820625-fbac",
+            "Export": {
+              "Name": "sls-serverless-app-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "TestLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "TestLambdaVersionOe82CqRp0MIcDyKoinSZ4Gw5XvdKASicxVsb9pORdE"
+            },
+            "Export": {
+              "Name": "sls-serverless-app-dev-TestLambdaFunctionQualifiedArn"
+            }
+          }
+        }
+      }
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "serviceRawFile": "# BASIC CONFIGURATION: Do not modify\nservice: serverless-app\nframeworkVersion: \"4\"\n\nprovider:\n  name: aws\n  runtime: nodejs18.x\n  stackName: tergo\n  region: us-west-1\n  httpApi:\n    id: zvlh814lbk\n  environment:\n    # Environment variables loaded dynamically from AWS SSM Parameter Store\n    DB_HOST: ${ssm:/tergo/db_host}\n    DB_PORT: ${ssm:/tergo/db_port}\n    DB_USER: ${ssm:/tergo/db_user}\n    DB_PASSWORD: ${ssm:/tergo/db_password}\n    DB_NAME: ${ssm:/tergo/db_name}\n  vpc:\n    securityGroupIds:\n      - sg-0178391edd988e7be\n    subnetIds:\n      - subnet-0100ca8036d20b118 # Private subnet 1\n  iam:\n    role:\n      statements:\n        - Effect: Allow\n          Action:\n            - ssm:GetParameter\n            - ssm:GetParameters\n          Resource:\n            - arn:aws:ssm:* # Allows access to all SSM parameters in the account\n\n# FUNCTIONS CONFIGURATION: Configure your functions here following the \"test\" example\nfunctions:\n  test:\n    handler: functions/test/handler.testHandler\n    events:\n      - httpApi:\n          path: /test\n          method: get\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "orgId": "932558cc-51ff-4db3-b0c4-604f31a7da9b",
+    "orgName": "tergo",
+    "userId": "1wzCxk8PgFZy8CfX3X",
+    "userName": "tergo",
+    "serviceProviderAwsAccountId": "194722405914",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null,
+    "compiledCloudFormationTemplate": {
+      "AWSTemplateFormatVersion": "2010-09-09",
+      "Description": "The AWS CloudFormation template for this Serverless application",
+      "Resources": {
+        "TestLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/serverless-app-dev-test"
+          }
+        },
+        "IamRoleLambdaExecution": {
+          "Type": "AWS::IAM::Role",
+          "Properties": {
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": [
+                      "lambda.amazonaws.com"
+                    ]
+                  },
+                  "Action": [
+                    "sts:AssumeRole"
+                  ]
+                }
+              ]
+            },
+            "Policies": [
+              {
+                "PolicyName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "serverless-app",
+                      "dev",
+                      "lambda"
+                    ]
+                  ]
+                },
+                "PolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:CreateLogStream",
+                        "logs:CreateLogGroup",
+                        "logs:TagResource"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-app-dev*:*"
+                        }
+                      ]
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:PutLogEvents"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-app-dev*:*:*"
+                        }
+                      ]
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "ssm:GetParameter",
+                        "ssm:GetParameters"
+                      ],
+                      "Resource": "arn:aws:ssm:*"
+                    }
+                  ]
+                }
+              }
+            ],
+            "Path": "/",
+            "RoleName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "serverless-app",
+                  "dev",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  "lambdaRole"
+                ]
+              ]
+            },
+            "ManagedPolicyArns": [
+              {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        "TestLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-us-west-1-20820625-fbac",
+              "S3Key": "serverless/serverless-app/dev/1737685210114-2025-01-24T02:20:10.114Z/serverless-app.zip"
+            },
+            "Handler": "functions/test/handler.testHandler",
+            "Runtime": "nodejs18.x",
+            "FunctionName": "serverless-app-dev-test",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "Environment": {
+              "Variables": {
+                "DB_HOST": "tergo-rds-free.c9yuukcc8dbt.us-west-1.rds.amazonaws.com",
+                "DB_PORT": "5432",
+                "DB_USER": "tergoadmin",
+                "DB_PASSWORD": "<REDACTED>",
+                "DB_NAME": "postgres"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            },
+            "VpcConfig": {
+              "SecurityGroupIds": [
+                "sg-0178391edd988e7be"
+              ],
+              "SubnetIds": [
+                "subnet-0100ca8036d20b118"
+              ]
+            }
+          },
+          "DependsOn": [
+            "TestLogGroup"
+          ]
+        },
+        "TestLambdaVersionOe82CqRp0MIcDyKoinSZ4Gw5XvdKASicxVsb9pORdE": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "TestLambdaFunction"
+            },
+            "CodeSha256": "McgYys4v1tINHZYwyDfDqD6EWKYeYwBainlRvWItTk8="
+          }
+        },
+        "TestLambdaPermissionHttpApi": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "TestLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  "zvlh814lbk",
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
+        "HttpApiIntegrationTest": {
+          "Type": "AWS::ApiGatewayV2::Integration",
+          "Properties": {
+            "ApiId": "zvlh814lbk",
+            "IntegrationType": "AWS_PROXY",
+            "IntegrationUri": {
+              "Fn::GetAtt": [
+                "TestLambdaFunction",
+                "Arn"
+              ]
+            },
+            "PayloadFormatVersion": "2.0",
+            "TimeoutInMillis": 30000
+          }
+        },
+        "HttpApiRouteGetTest": {
+          "Type": "AWS::ApiGatewayV2::Route",
+          "Properties": {
+            "ApiId": "zvlh814lbk",
+            "RouteKey": "GET /test",
+            "Target": {
+              "Fn::Join": [
+                "/",
+                [
+                  "integrations",
+                  {
+                    "Ref": "HttpApiIntegrationTest"
+                  }
+                ]
+              ]
+            }
+          },
+          "DependsOn": "HttpApiIntegrationTest"
+        }
+      },
+      "Outputs": {
+        "ServerlessDeploymentBucketName": {
+          "Value": "serverless-framework-deployments-us-west-1-20820625-fbac",
+          "Export": {
+            "Name": "sls-serverless-app-dev-ServerlessDeploymentBucketName"
+          }
+        },
+        "TestLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "TestLambdaVersionOe82CqRp0MIcDyKoinSZ4Gw5XvdKASicxVsb9pORdE"
+          },
+          "Export": {
+            "Name": "sls-serverless-app-dev-TestLambdaFunctionQualifiedArn"
+          }
+        }
+      }
+    }
+  }
+}

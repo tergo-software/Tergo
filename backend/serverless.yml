@@ -1,0 +1,41 @@
+# BASIC CONFIGURATION: Do not modify
+service: serverless-app
+frameworkVersion: "4"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stackName: tergo
+  region: us-west-1
+  httpApi:
+    id: zvlh814lbk
+  environment:
+    # Environment variables loaded dynamically from AWS SSM Parameter Store
+    DB_HOST: ${ssm:/tergo/db_host}
+    DB_PORT: ${ssm:/tergo/db_port}
+    DB_USER: ${ssm:/tergo/db_user}
+    DB_PASSWORD: ${ssm:/tergo/db_password}
+    DB_NAME: ${ssm:/tergo/db_name}
+  vpc:
+    securityGroupIds:
+      - sg-0178391edd988e7be
+    subnetIds:
+      - subnet-0100ca8036d20b118 # Private subnet 1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+          Resource:
+            - arn:aws:ssm:* # Allows access to all SSM parameters in the account
+
+# FUNCTIONS CONFIGURATION: Configure your functions here following the "test" example
+functions:
+  test:
+    handler: functions/test/handler.testHandler
+    events:
+      - httpApi:
+          path: /test
+          method: get
