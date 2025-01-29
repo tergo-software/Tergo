@@ -1,12 +1,12 @@
 import { Text, View, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 
-export default function Index() {
+export default function About() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Welcome to Tergo</Text>
-      <Link href="/about" style={styles.button}>
-        Go to About screen
+      <Text style={styles.text}>This is the test web about page</Text>
+      <Link href="/crm" style={styles.button}>
+        Go to the crm page
       </Link>
     </View>
   );
