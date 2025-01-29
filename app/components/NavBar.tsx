@@ -11,7 +11,7 @@ export default function Navbar() {
         backgroundColor: "#333",
       }}
     >
-      <Text style={{ color: "white", fontSize: 20 }}>My App</Text>
+      <Text style={{ color: "white", fontSize: 20 }}>Tergo</Text>
       <View style={{ flexDirection: "row", gap: 16 }}>
         <Link href="/" asChild>
           <Pressable>
@@ -21,6 +21,11 @@ export default function Navbar() {
         <Link href="/about" asChild>
           <Pressable>
             <Text style={{ color: "white" }}>About</Text>
+          </Pressable>
+        </Link>
+        <Link href="/crm" asChild>
+          <Pressable>
+            <Text style={{ color: "white" }}>CRM</Text>
           </Pressable>
         </Link>
       </View>

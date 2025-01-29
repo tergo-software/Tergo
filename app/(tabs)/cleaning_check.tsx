@@ -1,13 +1,11 @@
 import { Text, View, StyleSheet } from "react-native";
-import { Link } from "expo-router";
 
-export default function Double_Nested() {
+export default function Cleaning_Check() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>This is to go home</Text>
-      <Link href="/" style={styles.button}>
-        Go to home
-      </Link>
+      <Text style={styles.text}>
+        This page is where we will put cleaning check functionality
+      </Text>
     </View>
   );
 }
@@ -21,10 +19,5 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#ffffff",
-  },
-  button: {
-    fontSize: 20,
-    textDecorationLine: "underline",
-    color: "#fff",
   },
 });
