@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 
-export default function crm() {
+export default function CRM() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>This is to go home from the crm page</Text>

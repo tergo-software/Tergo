@@ -4,10 +4,7 @@ import { Link } from "expo-router";
 export default function About() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>This is the test web about page</Text>
-      <Link href="/crm" style={styles.button}>
-        Go to the crm page
-      </Link>
+      <Text style={styles.text}>This is the test mobile about page</Text>
     </View>
   );
 }
