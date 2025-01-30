@@ -1,48 +1,24 @@
-import { Tabs } from "expo-router";
+import {tamaguiCSS } from '../tamagui-web.css'
 
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { Stack } from 'expo-router'
+import { useColorScheme } from 'react-native'
+import { TamaguiProvider } from 'tamagui'
 
-export default function TabLayout() {
+import { tamaguiConfig } from '../../tamagui.config'
+
+export default function RootLayout() {
+  const colorScheme = useColorScheme()
+
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: "#2986cc",
-        headerStyle: {
-          backgroundColor: "#25292e",
-        },
-        headerShadowVisible: false,
-        headerTintColor: "#fff",
-        tabBarStyle: {
-          backgroundColor: "#25292e",
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "home-sharp" : "home-outline"}
-              color={color}
-              size={24}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="cleaning_check"
-        options={{
-          title: "Cleaning Check",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "albums" : "albums-outline"}
-              color={color}
-              size={24}
-            />
-          ),
-        }}
-      />
-    </Tabs>
-  );
+    // add this
+    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        </Stack>
+      </ThemeProvider>
+    </TamaguiProvider>
+  )
 }

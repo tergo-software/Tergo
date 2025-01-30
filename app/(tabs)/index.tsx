@@ -1,23 +1,14 @@
-import { Text, View, StyleSheet} from "react-native";
+import React from 'react';
+import { Button, Text, YStack, TamaguiProvider } from 'tamagui';
+import config from '../../tamagui.config';
 
-export default function Index() {
+export default function App() {
   return (
-    <View
-      style={styles.container}
-    >
-      <Text style = {styles.text}>Welcome to Tergo</Text>
-    </View>
+    <TamaguiProvider config={config}>
+      <YStack>
+        <Text>Welcome to Tamagui! How are you?</Text>
+        <Button onPress={() => console.log('Button pressed')}>Click Me</Button>
+      </YStack>
+    </TamaguiProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: '#25292e'
-  }, 
-  text: {
-    color: '#ffffff'
-  }
-});
