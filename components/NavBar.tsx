@@ -18,12 +18,12 @@ export default function Navbar() {
             <Text style={{ color: "white" }}>Home</Text>
           </Pressable>
         </Link>
-        <Link href="/about" asChild>
+        <Link href="../about" asChild>
           <Pressable>
             <Text style={{ color: "white" }}>About</Text>
           </Pressable>
         </Link>
-        <Link href="/crm" asChild>
+        <Link href="../crm" asChild>
           <Pressable>
             <Text style={{ color: "white" }}>CRM</Text>
           </Pressable>
