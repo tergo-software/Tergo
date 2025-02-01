@@ -31,9 +31,9 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="about"
+        name="apartments"
         options={{
-          title: "about",
+          title: "Apartment",
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name="cog" color={color} />
           ),
@@ -41,6 +41,8 @@ export default function Layout() {
       />
       <Tabs.Screen name="crm" options={{ href: null }} />
       <Tabs.Screen name="+not-found" options={{ href: null }} />
+      <Tabs.Screen name="about" options={{ href: null }} />
+      <Tabs.Screen name="inspection" options={{ href: null }} />
     </Tabs>
   );
 }
