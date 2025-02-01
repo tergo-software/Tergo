@@ -14,7 +14,7 @@ export default function Inspection() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
       <Stack flex={1} alignItems="center" justifyContent="center">
-      <Text fontSize="$6" fontWeight="bold">About Page</Text>
+      <Text fontSize="$6" fontWeight="bold">Inspection Page</Text>
       </Stack>
     </TamaguiProvider>
 

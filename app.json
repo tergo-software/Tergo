@@ -4,6 +4,7 @@
     "slug": "Tergo",
     "version": "1.0.0",
     "orientation": "portrait",
+    "main": "./App.tsx",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
